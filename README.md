@@ -1,5 +1,3 @@
-# Quello che dice il titolo...
-
 # Mia Guida LPS
 Dopo aver setuppato il compilatore C , scrivere ( con il terminale nella stessa folder del file.c )
 _gcc NOMEFILEC.c_
