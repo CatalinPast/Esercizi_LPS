@@ -1,0 +1,42 @@
+
+START:
+
+org $2000
+
+* da mips
+
+* .eqv SPEED 14
+* diventa
+* SPEED equ 14
+
+* qui - registri
+* d2 d3 d4 d5
+* =
+* time space laps gaps
+
+* in mc68k anche formati registi devi scegliere mentre in mips per forza a word 32 bit
+* formato word mentre su mips usi word ma di default a 32 li qui scegli pk anche pk long poi devi fare routine per fare moltiplicazione ecc.
+* "parte piu importante di un programma sono i commenti"
+* rimanere fedeli a codice c obiettivo
+* trap che fa
+* #LENGTH quando usi come se fosse numero
+* da architettura prima a mips capito che li per numeri immediati e move per registri ecc. e piu veloce tipo di divisione che passa per alu ecc. quelle istr. a arch.
+* divs #LENGTH , d3
+* contiene in metà superiore remainder e in inferiore quoziente
+
+* 30:7 divs ma prima devi fare move 30 in registro e poi divs la prima puo essere costante o registro ma quello di memorizzazione per forza registro
+
+END:
+
+
+
+* ---METADATA--- do not write below here
+* {
+*     "version": 1,
+*     "description": "",
+*     "name": "eser1",
+*     "language": "M68K",
+*     "createdAt": 1711105777878,
+*     "updatedAt": 1711115388321,
+*     "id": "IrGyyCr"
+* }

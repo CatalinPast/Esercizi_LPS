@@ -1,0 +1,69 @@
+	.eqv LENGTH 523
+	.eqv ERROR 103
+	.eqv SPEED 14
+	
+	.text
+	# ci concentriamo sul linguaggio e sulle cose base nn avanzate in lps
+	
+	# traduzione delle define
+
+	
+	# per prendere input
+	# printf (" %d , &time")
+	li $v0,5
+	syscall
+	move $s0,$v0
+	
+	# time -= ERROR
+	sub $s0,$s0,ERROR
+	
+	# numeri piccoli quindi va bene versione a 32 bit di moltiplicazione : mul
+	mul $s1,$s0,SPEED # secondo operando nn puo essere registro diretto cioe numero
+	
+	# pressione -> divisione e remainder allora usa istruzione che in colpo solo fa entrambe e nn con due istruzioni separate ma va bene anche quello ma nn prendi max
+	# div e poi ti suggerisce mipsmars
+	# versione a 2 operandi di div vuole 2 registri e quindi nn puoi usare numero diretto POSSO caricare length in un registro meglio fare un trasferimento dati pk veloce e poi div a 2 operandi che div a 3 tipo??
+	li $t0,LENGTH # preparo il divisore
+	div $s1,$t0
+	mflo $s2
+	# poi vedi ma corrisponde a  ome fatto io con t1 in C??
+	mfhi $s3 # remainder in gap
+	
+	# se input = 3287 , risultato = 85121
+	
+	move $a0,$s3
+	li $v0,1
+	syscall
+	
+	li $a0,32
+	li $a0,1
+	syscall
+	
+	# syscall printinteger ecc. guida su help qui di mipsmars
+	# registri ci sempliificano vita ma sono pochi quindi se usi tutti sarai in difficoltà
+	
+	# time space laps gap : corrispondono a :
+	# s0 s1 s2 s3
+	
+	# define SPEED ERROR LENGTH le puoi tradurre direttamente VEDI SU
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

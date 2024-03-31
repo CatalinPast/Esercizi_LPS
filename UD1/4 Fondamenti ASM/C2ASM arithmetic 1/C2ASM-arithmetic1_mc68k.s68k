@@ -1,0 +1,151 @@
+CONST1 equ 78
+CONST2 equ 27257
+
+ORG $2000
+START:
+
+* int s1 = 24, s2, s3, s4 = 8118;
+move.w #24 , d7 * d7 PER ORA come s1
+clr.w d2 * d2 come s2
+clr.w d3 * d3 come s3
+move.w #8118 , d4 * d4 come s4
+
+* insert a value n such that 40 < n < 200) for the program to behave properly
+* scanf ( "%d",&s2 ) ;
+move #4,d0
+trap #15
+* leggendo in d0 per come fatto il tutto assembly
+* sa che il 4 vuol dire una certa cosa
+* e salva in d1 il risultato dell'input pk vuol dire che
+* devi fare input se ce il 4 in d0
+move.w d1 , d2
+
+clr.w d0 * d0 come t1
+clr.w d1 * d1 come s1
+
+* d0 come t1
+* d1 come s1
+* d2 come s2
+* d3 come s3
+* d4 come s4
+* d5 come t2
+
+*    //s3 = CONST1 * --s1 - s4 / s2;
+*    //nota : side effect on s1
+
+*    s1 = s1 - 1 ; // oppure s1 -= 1 ;
+move.w d7 , d1
+sub.w #1 , d1
+
+*    int t1 ;
+* gia fatto su la clear
+
+*    t1 = CONST1 * s1 ;
+move.w d1 , d0 * adesso è in t1 valore di s1 quindi fai assegnametno composto
+muls #CONST1 , d0
+
+*    int t2 ;
+clr.w d5
+
+*    t2 = s4 / s2 ;
+*    d5 = d4 / d2 ;
+move.w d4 , d5
+divs d2 , d5
+* in d6 ce nella word bassa il quoziente e nella word alta il resto
+* ma ti serve solo il resto li dentro
+* quindi
+swap d5
+clr.w d5
+swap d5
+*    s3 = t1 - t2 ;
+sub.w d5 , d0
+move.w d0 , d3
+
+* FINE PRIMA PARTE
+
+*    //s1 += ( CONST2 - s4 ) / ( CONST1 + 13 );
+
+*    t1 = CONST2 - s4 ;
+clr.w d0
+move.w #CONST2 , d0
+sub.w d4 , d0
+
+*    t2 = CONST1 + 13 ;
+clr.w d5
+add.w #CONST1+13 , d5
+
+*    t1 /= t2 ;
+divs d5 , d0
+swap d0
+clr.w d0
+swap d0
+
+*    s1 += t1 ;
+add.w d0 , d1
+
+*FINE SECONDA PARTE
+
+*    //s4 -= ( s1 = s4 % s2 - 2 ) - CONST2 / ( 5 + s3++ );
+*    //nota : side effect su s1 e su s3 ;
+
+*    t1 = s4 % s2 ;
+clr.w d0
+move.w d4 , d0
+divs d2 , d0
+clr.w d0
+swap d0
+
+*    s1 = t1 - 2 ;
+clr.w d5
+move.w d0 , d5
+sub.w #2 , d5
+move.w d5 , d1
+
+*    t2 = 5 + s3 ;
+clr.w d5
+move.w d3 , d5
+add.w #5 , d5
+
+*    s3 = s3 + 1 ;
+add.w #1 , d3
+
+*    t1 = CONST2  / t2 ;
+clr.w d0
+move.w #CONST2 , d0
+divs d5 , d0
+
+* attenzione mo e anche istruzione su va be quella va bene pero , dubbio se posso usarli a sto punto forse serve altro registro... se posso usare d0 e d5 ecc.
+
+*    t2 = s1 - t1 ;
+* osserva prima ora t2 lo posso alterare pk usato su ma ora si sovrascrivera il suo risultato ma ci serve t1 ...
+clr.w d5
+move.w d1 , d5
+sub.w d0 , d5
+
+* intanto notiamo che ci servira t2 ma nn t1 ora guardando anceh istruzione dopo sta riga!!
+
+*    s4 -= t2 ;
+sub.w d5 , d4
+
+* assegnamenti composti ottimalmente traducibili in assembly da UC!!!!!!!!
+
+* printf( "s1 <- %d, s2 <- %d, s3 <- %d, s4 <- %d\n", s1, s2, s3, s4 ) ;
+* nn so come si fa que pero forse vedere i registri!??!??!
+* no , ecco
+move.w 	#3,d0
+trap	#15
+* ma le altre variabili ?? que è solo una
+
+END:
+
+
+* ---METADATA--- do not write below here
+* {
+*     "version": 1,
+*     "description": "",
+*     "name": "C2ASM-arithmetic1_mc68k",
+*     "language": "M68K",
+*     "createdAt": 1711885654904,
+*     "updatedAt": 1711911973106,
+*     "id": "ypBqLsB"
+* }

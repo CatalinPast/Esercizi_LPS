@@ -1,10 +1,12 @@
+// soluzione al problema giri pista in stile :
+// PC
 #include <stdio.h>
 #define SPEED 14
 #define ERROR 103
 #define LENGTH 523
 // costanti simboliche
 // tempo nn t pk da matematici
-//plain C solution a problema di giri pista con cronometro difettoso
+// plain C solution a problema di giri pista con cronometro difettoso
 int time, space, laps, gap;
 int main ( void )
 {

@@ -17,7 +17,7 @@ int main ( void )
 
     } while (a > 0) ;
     printf("FOR\n") ;
-    //for (a = 5;)
+    //for (a = 5; a < 5; )
     return 0 ;
 }
 // un solo valore esiste per cui nn stampano la stessa cosa se no sempre stessa cosa tutti e tre valore negativo o 0??
