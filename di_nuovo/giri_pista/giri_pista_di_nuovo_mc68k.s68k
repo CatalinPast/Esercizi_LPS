@@ -1,0 +1,68 @@
+org $2000
+
+START:
+
+SPEED equ 14
+ERROR equ 103
+LENGTH equ 523
+
+; pero chiedi se devi ottimizzare per forza riusando d0 , d1 e rifai di conseguenza
+
+; time d2
+; space d3
+; laps d4
+; gap d5
+
+; int time , space , laps , gap ;
+clr.w d2
+clr.w d3
+clr.w d4
+clr.w d5
+
+; scanf ( "%d" , &time ) ;
+move.w #4 , d0
+trap #15
+move.w d1 , d2
+
+; space = time - ERROR ;
+move.w d2 , d3
+sub.w #ERROR , d3
+
+; space = space * SPEED ;
+muls #SPEED , d3
+
+; laps = space / LENGTH ;
+; gap = space % LENGTH ;
+; possiamo usare space per la divisone ma solo perche nn ci serve dopo per ottimizzare
+divs #LENGTH , d3
+move.w d3 , d4
+swap d3
+move.w d3 , d5
+
+; printf ( "%d %d" , laps , gap ) ;
+move.w #3 , d0
+move.w d4 , d1
+trap #15
+
+move.w #6 , d0
+move.w #32 , d1
+trap #15
+
+move.w #3 , d0
+move.w d5 , d1
+trap #15
+
+END:
+
+
+
+* ---METADATA--- do not write below here
+* {
+*     "version": 1,
+*     "description": "",
+*     "name": "giri pista di nuovo",
+*     "language": "M68K",
+*     "createdAt": 1712436896523,
+*     "updatedAt": 1712437708179,
+*     "id": "oErIuKr"
+* }

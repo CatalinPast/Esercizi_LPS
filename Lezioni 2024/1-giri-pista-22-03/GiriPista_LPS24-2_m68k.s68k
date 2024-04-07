@@ -1,0 +1,90 @@
+* -------------------------------
+* 	LPS Example
+*
+* 	Giri di Pista
+*
+*	Language: MC68K-ASM0
+*	Style: plain MC68000
+* 	Version: LPS24-2
+* -------------------------------
+
+* Plain MC68000 Solution
+
+* La versione LPS24-2 è corretta
+; come la versione C, NON
+; sovrascrive il valore della variabile space
+
+
+* Corrispondenza tra variabili della versione C e registri
+* int time, space, laps, gap;
+* time <-> d2 (word)
+* space <-> d3 (word)
+* laps <-> d4 (word)
+* gap <-> d5 (word)
+
+* Costanti simboliche	
+* #define SPEED 14
+SPEED	equ	14
+* #define ERROR 103
+ERROR	equ	103
+* #define LENGTH 523
+LENGTH	equ	523
+
+	org	$2000
+
+	; legge input
+	; scanf( "%d", &time );
+	move.w	#4,d0
+	trap	#15
+	move.w 	d1,d2
+
+	; time -= ERROR;
+	sub.w 	#ERROR,d2
+
+	; space = time * SPEED;
+	move.w 	d2,d3
+	muls	#SPEED,d3	; long d3 contains product
+
+	; copy space in d0 (in order NOT to trash space)
+	move.l 	d3,d0
+
+	; laps = space / LENGTH;
+	; gap = space % LENGTH;
+	divs	#LENGTH,d0
+	; D3 after divs:
+	; - quotient in bits 0-15
+	; - reminder in biys 16-31
+
+	; copy quotient in laps
+	move.w d0,d4
+
+	; copy reminder in gap
+	swap	d0
+	move.w 	d0,d5
+
+	; scrive output
+	; printf( "%d %d\n",  );
+	move.w 	d4,d1
+	move.w	#3,d0
+	trap	#15
+	
+	move.b 	#32,d1		; 32 è la codifica di uno spazio
+	move.w	#6,d0
+	trap	#15
+
+	move.w 	d5,d1
+	move.w	#3,d0
+	trap	#15
+
+
+
+* ---METADATA--- do not write below here
+* {
+*     "version": 1,
+*     "description": "problema, richiede espressioni",
+*     "name": "Giri di Pista",
+*     "language": "M68K",
+*     "createdAt": 1710843961361,
+*     "updatedAt": 1711144958928,
+*     "id": "vyCIMMF"
+* }

@@ -1,0 +1,67 @@
+ORG $2000
+START:
+ERROR equ 103
+SPEED equ 14
+LENGTH equ 523
+* time to d5
+* laps to d4
+* gap to d2
+* space to d3
+
+* int time , laps , gap ;
+* int space ;
+clr.w d5
+clr.w d4
+clr.w d2
+clr.w d3
+
+* scanf ( "%d" , & time ) ;
+move.w #4 , d0
+trap #15
+
+move.w d1 , d5
+clr.w d0
+clr.w d1
+
+* time to d5
+* laps to d4
+* gap to d2
+* space to d3
+
+* space = time - ERROR ;
+move.w d5 , d3
+sub.w #ERROR , d3
+
+* space *= SPEED ;
+muls #SPEED , d3
+
+* laps = space / LENGTH ;
+* gap = space % LENGTH ;
+move.w d3 , d2
+divs #LENGTH , d2
+move.w d2 , d4
+clr.w d2
+swap d2
+
+* printf ( "%d %d" , laps , gap ) ;
+move.w d4 , d1
+move.w #3 , d0
+trap #15
+clr.w d1
+move.w d2 , d1
+move.w #3 , d0
+trap #15
+END:
+
+
+
+* ---METADATA--- do not write below here
+* {
+*     "version": 1,
+*     "description": "",
+*     "name": "giri pista",
+*     "language": "M68K",
+*     "createdAt": 1712069613099,
+*     "updatedAt": 1712070858066,
+*     "id": "qsxJAsu"
+* }

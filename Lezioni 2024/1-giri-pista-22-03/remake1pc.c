@@ -38,3 +38,35 @@ int main ( void )
     printf ( "%d %d" , laps , gap ) ;
     return FINE;
 }
+
+
+
+/*
+Testcases in Jason format:
+
+{
+
+    "amount": 5,
+    "test_cases": [{
+        "id": "0",
+        "input": "189",
+        "expected": "2 158"},
+        {
+        "id": "1",
+        "input": "103",
+        "expected": "0 0"},
+     	{
+        "id": "2",
+        "input": "3287",
+        "expected": "85 121"},
+     	{
+        "id": "3",
+        "input": "411",
+        "expected": "8 128"},
+     	{
+        "id": "4",
+        "input": "256",
+        "expected": "4 50"}
+    ]
+}
+*/

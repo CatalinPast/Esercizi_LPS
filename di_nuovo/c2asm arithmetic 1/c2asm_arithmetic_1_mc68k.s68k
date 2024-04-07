@@ -1,0 +1,126 @@
+ORG $1000
+
+CONST1 equ 78
+CONST2 equ 27257
+
+START:
+
+; parole usate come word altrimenti se conti laltra word
+; sarebbe cosa strana ma no è solo parte word quindi quozienti ecc.
+
+; s1 to                               d5
+; s2 to d2
+; s3 to d3
+; s4 to d4
+
+; int
+; s1 = 24,
+; s2,
+; s3,
+; s4 = 8118;
+move.w #24 , d5
+clr.w d2
+clr.w d3
+move.w #8118 , d4
+
+; scanf( "%d", &s2 );
+move.w #4 , d0
+trap #15
+move.w d1 , d2
+
+;    s1 -= 1 ;
+;    s3 = CONST1 * s1 ;
+;    int t1 ;                         t1 to d1
+;    t1 = s4 / s2 ;
+;    s3 = s3 - t1 ;
+sub.w #1 , d5
+move.w d5 , d3
+muls #CONST1 , d3
+clr.w d1
+move.w d4 , d1
+divs d2 , d1
+sub.w d1 , d3
+
+;    t1 = CONST2 - s4 ;
+;    int t2 ;                         t2 to d0
+;    t2 = CONST1 + 13 ;
+;    t1 /= t2 ;
+;    s1 += t1 ;
+move.w #CONST2 , d1
+sub.w d4 , d1
+clr.w d0
+move.w #CONST1+13, d0
+divs d0 , d1 ; quoziente pero nella parte word
+add.w d0 , d5
+
+;    s1 = s4 % s2 ;
+;    s1 -= 2 ;
+;    t1 = CONST2 ;
+;    t2 = 5 + s3 ;
+;    s3 += 1 ;
+;    t1 /= t2 ;
+;    t2 = s1 - t1 ;
+;    s4 -= t2 ;
+move.w d4 , d5
+divs d2 , d5
+swap d5
+sub.w #2 , d5
+move.w #CONST2 , d1
+move.w #5 , d0
+add.w d3 , d0
+add.w #1 , d3
+move.w d1 , d6 ; devi usare d6 , un altro registro , se no legge come long la divs !
+divs d0 , d6 ; adesso d6 contiene t1 !
+move.w d5 , d0
+sub.w d6 , d0
+sub.w d0 , d4
+
+; printf( "s1 <- %d, s2 <- %d, s3 <- %d, s4 <- %d\n", 
+;			s1, s2, s3, s4 );
+clr.l d0
+clr.l d1
+
+move.w #3 , d0
+move.w d5 , d1
+trap #15
+
+; spazio
+move.w #6 , d0
+move.w #32 , d1
+trap #15
+
+move.w #3 , d0
+move.w d2 , d1
+trap #15
+
+; spazio
+move.w #6 , d0
+move.w #32 , d1
+trap #15
+
+move.w #3 , d0
+move.w d3 , d1
+trap #15
+
+; spazio
+move.w #6 , d0
+move.w #32 , d1
+trap #15
+
+move.w #3 , d0
+move.w d4 , d1
+trap #15
+
+END:
+
+
+* ---METADATA--- do not write below here
+* {
+*     "version": 1,
+*     "description": "",
+*     "name": "c2asm arithmetic 1 di nuovo",
+*     "language": "M68K",
+*     "createdAt": 1712440102444,
+*     "updatedAt": 1712486143164,
+*     "id": "vEtzIMA"
+* }
